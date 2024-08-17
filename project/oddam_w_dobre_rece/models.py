@@ -20,11 +20,13 @@ class Institution(models.Model):
 
 
 class Donation(models.Model):
-    quantity = models.SmallIntegerField
+    quantity = models.DecimalField(max_digits=4, decimal_places=0, null=True)
     categories = models.ManyToManyField(Category)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
     address = models.CharField(max_length=64)
     phone_number = models.SmallIntegerField
+    city = models.CharField(max_length=30, null=True)
+    zip_code = models.CharField(max_length=6, null=True)
     pick_up_date = models.DateField
     pick_up_time = models.TimeField
     pick_up_comment = models.TextField
