@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
 from django.shortcuts import render, redirect
@@ -48,6 +48,12 @@ class Login(View):
         else:
             return redirect('register')
     
+
+class Logout(View):
+     def get(self, request, *args, **kwargs):
+         logout(request)
+         return redirect('main')
+
 
 class Register(View):
     def get(self, request, *args, **kwargs):

@@ -24,5 +24,6 @@ urlpatterns = [
     path('', owdr_views.LandingPage.as_view(), name="main"),
     path('add_donation/', owdr_views.AddDonation.as_view(), name="add_donation"),
     path('login/', owdr_views.Login.as_view(), name="login"),
+    path('logout/', owdr_views.Logout.as_view(), name="logout"),
     path('register/', owdr_views.Register.as_view(), name='register'),
 ]
