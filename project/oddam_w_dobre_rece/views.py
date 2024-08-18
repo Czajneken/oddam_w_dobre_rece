@@ -10,11 +10,19 @@ from .models import (
 
 class LandingPage(View):
     def get(self, request, *args, **kwargs):
-        quantity = Donation.objects.aggregate(total_quantity=Sum('quantity'))
-        institutions = Donation.objects.aggregate(total_institutions=Count('institution'))
+        gifts_quantity = Donation.objects.aggregate(total_quantity=Sum('quantity'))
+        gifted_institutions = Donation.objects.aggregate(total_institutions=Count('institution'))
+        
+        all_foundations = Institution.objects.filter(type=1)
+        all_organisations = Institution.objects.filter(type=2)
+        all_localraisers = Institution.objects.filter(type=3)
+
         context = {
-            'quantity': quantity,
-            'institutions': institutions,
+            'gifts_quantity': gifts_quantity,
+            'gifted_institutions': gifted_institutions,
+            'all_foundations': all_foundations,
+            'all_organisations': all_organisations,
+            'all_localraisers': all_localraisers,
         }
         return render(request, 'index.html', context)
 
