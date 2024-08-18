@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
 from django.db.models import Sum, Count
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
 from .models import (
@@ -40,4 +41,24 @@ class Login(View):
 class Register(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'register.html')
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get('name')
+        surname = request.POST.get('surname')
+        email = request.POST.get('email')
+        pass1 = request.POST.get('password')
+        pass2 = request.POST.get('password2')
+        context = {
+            'name': name,
+            'surname': surname,
+            'email': email,
+            'pass1': pass1,
+            'pass2': pass2,
+        }
+
+        if pass1 == pass2:
+            user = User.objects.create_user(username=email, first_name=name, last_name=surname, email=email, password=pass1)
+            user.save()
+            return redirect('login')
+        else:
+            return render(request, 'register.html', context)
     
