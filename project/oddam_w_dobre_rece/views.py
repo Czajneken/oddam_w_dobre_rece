@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
 from django.shortcuts import render, redirect
@@ -29,9 +30,16 @@ class LandingPage(View):
         return render(request, 'index.html', context)
 
 
-class AddDonation(View):
+class AddDonation(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, request, *args, **kwargs):
-        return render(request, 'form.html')
+        donation_categories = Category.objects.all()
+
+        context = {
+            'donation_categories': donation_categories,
+        }
+
+        return render(request, 'form.html', context)
     
 
 class Login(View):
@@ -64,6 +72,7 @@ class Register(View):
         email = request.POST.get('email')
         pass1 = request.POST.get('password')
         pass2 = request.POST.get('password2')
+
         context = {
             'name': name,
             'surname': surname,
