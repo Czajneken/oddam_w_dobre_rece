@@ -26,4 +26,5 @@ urlpatterns = [
     path('login/', owdr_views.Login.as_view(), name="login"),
     path('logout/', owdr_views.Logout.as_view(), name="logout"),
     path('register/', owdr_views.Register.as_view(), name='register'),
+    path('profile/', owdr_views.Profile.as_view(), name='profile'),
 ]
