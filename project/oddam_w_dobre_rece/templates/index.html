@@ -94,7 +94,7 @@
 
           <div class="col"><div class="text">
             {% for foundation_category in foundation.categories.all %}
-              {{ foundation_category }}, 
+              {{ foundation_category }}{% if not forloop.last %}, {% endif %}
             {% endfor %}
           </div></div>
         </li>
@@ -129,7 +129,7 @@
           <div class="col"><div class="text">
             
             {% for non_gov_organization_category in non_gov_organization.categories.all %}
-              {{ non_gov_organization_category }}, 
+              {{ non_gov_organization_category }}{% if not forloop.last %}, {% endif %} 
             {% endfor %}
 
           </div></div>
@@ -163,7 +163,7 @@
 
           <div class="col"><div class="text">
             {% for localraiser_category in localraiser.categories.all %}
-              {{ localraiser_category }}, 
+              {{ localraiser_category }}{% if not forloop.last %}, {% endif %} 
             {% endfor %}
           </div></div>
         </li>
