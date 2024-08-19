@@ -89,10 +89,14 @@
         <li>
           <div class="col">
             <div class="title">{{ foundation.name }}</div>
-            <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
+            <div class="subtitle">{{ foundation.description }}</div>
           </div>
 
-          <div class="col"><div class="text">ubrania, jedzenie, sprzęt AGD, meble, zabawki</div></div>
+          <div class="col"><div class="text">
+            {% for foundation_category in foundation.categories.all %}
+              {{ foundation_category }}, 
+            {% endfor %}
+          </div></div>
         </li>
       {% endfor %}
         
@@ -115,14 +119,20 @@
     </p>
     <ul class="help--slides-items">
       
-      {% for organisation in all_organisations %}
+      {% for non_gov_organization in all_non_gov_organizations %}
         <li>
           <div class="col">
-            <div class="title">{{ organisation.name }}</div>
-            <div class="subtitle">Lorem ipsum dolor sit amet consectetur.</div>
+            <div class="title">{{ non_gov_organization.name }}</div>
+            <div class="subtitle">{{ non_gov_organization.description }}</div>
           </div>
 
-          <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
+          <div class="col"><div class="text">
+            
+            {% for non_gov_organization_category in non_gov_organization.categories.all %}
+              {{ non_gov_organization_category }}, 
+            {% endfor %}
+
+          </div></div>
         </li>
       {% endfor %}
         
@@ -148,10 +158,14 @@
         <li>
           <div class="col">
             <div class="title">{{ localraiser.name }}</div>
-            <div class="subtitle">Lorem ipsum dolor sit amet consectetur.</div>
+            <div class="subtitle">{{ localraiser.description }}</div>
           </div>
 
-          <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
+          <div class="col"><div class="text">
+            {% for localraiser_category in localraiser.categories.all %}
+              {{ localraiser_category }}, 
+            {% endfor %}
+          </div></div>
         </li>
       {% endfor %}
         

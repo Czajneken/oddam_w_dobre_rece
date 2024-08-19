@@ -7,6 +7,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 class Category(models.Model):
     name = models.CharField(max_length=64)
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Institution(models.Model):
     TYPES = (
@@ -19,6 +22,9 @@ class Institution(models.Model):
     description = models.TextField(null=True)
     type = models.IntegerField(choices=TYPES, default=1)
     categories = models.ManyToManyField(Category)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class Donation(models.Model):
@@ -33,3 +39,4 @@ class Donation(models.Model):
     pick_up_time = models.TimeField(null=True)
     pick_up_comment = models.TextField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    

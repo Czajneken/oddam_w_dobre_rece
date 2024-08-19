@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -17,14 +18,14 @@ class LandingPage(View):
         gifted_institutions = Donation.objects.aggregate(total_institutions=Count('institution'))
         
         all_foundations = Institution.objects.filter(type=1)
-        all_organisations = Institution.objects.filter(type=2)
+        all_non_gov_organizations = Institution.objects.filter(type=2)
         all_localraisers = Institution.objects.filter(type=3)
 
         context = {
             'gifts_quantity': gifts_quantity,
             'gifted_institutions': gifted_institutions,
             'all_foundations': all_foundations,
-            'all_organisations': all_organisations,
+            'all_non_gov_organizations': all_non_gov_organizations,
             'all_localraisers': all_localraisers,
         }
         return render(request, 'index.html', context)
@@ -34,9 +35,11 @@ class AddDonation(LoginRequiredMixin, View):
     login_url = 'login'
     def get(self, request, *args, **kwargs):
         donation_categories = Category.objects.all()
+        all_organizations = Institution.objects.all()
 
         context = {
             'donation_categories': donation_categories,
+            'all_organizations': all_organizations,
         }
 
         return render(request, 'form.html', context)
