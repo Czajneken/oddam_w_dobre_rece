@@ -113,3 +113,7 @@ class Register(View):
         else:
             return render(request, 'register.html', context)
     
+
+class Profile(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'profile.html')

@@ -15,7 +15,7 @@ function filterInstitutions() {
     institutions.forEach(function(element) {
         let categoriesInInstitutionArray = element.querySelector
             ('input[name="institution"]').className.split(' ');
-
+        
         let institutionToShow = selectedCategories.every(function(element) {
             return categoriesInInstitutionArray.includes(element);
         });
