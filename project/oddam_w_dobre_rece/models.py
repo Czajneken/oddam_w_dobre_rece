@@ -12,15 +12,14 @@ class Category(models.Model):
 
 
 class Institution(models.Model):
-    TYPES = (
-        (1, "Fundacja"),
-        (2, "Organizacja pozarządowa"),
-        (3, "Zbiórka lokalna")
-    )
+    class Type(models.TextChoices):
+        FUNDACJA = "FN",
+        ORGANIZACJA_POZARZĄDOWA = "OP",
+        ZBIÓRKA_LOKALNA = "ZL",
 
     name = models.CharField(max_length=64)
     description = models.TextField(null=True)
-    type = models.IntegerField(choices=TYPES, default=1)
+    type = models.CharField(choices=Type.choices, default=Type.FUNDACJA, max_length=2)
     categories = models.ManyToManyField(Category)
 
     def __str__(self):
@@ -40,3 +39,5 @@ class Donation(models.Model):
     pick_up_comment = models.TextField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     
+    def __str__(self):
+        return f'{self.institution.name} -  {self.pick_up_date}'
