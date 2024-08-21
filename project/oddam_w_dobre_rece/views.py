@@ -12,6 +12,8 @@ from .models import (
     Donation
 )
 
+from .forms import DonationToCharityForm
+
 class LandingPage(View):
     def get(self, request, *args, **kwargs):
         gifts_quantity = Donation.objects.aggregate(total_quantity=Sum('quantity'))
@@ -34,15 +36,35 @@ class LandingPage(View):
 class AddDonation(LoginRequiredMixin, View):
     login_url = 'login'
     def get(self, request, *args, **kwargs):
-        donation_categories = Category.objects.all()
-        all_organizations = Institution.objects.all()
-
-        context = {
-            'donation_categories': donation_categories,
-            'all_organizations': all_organizations,
+        form = DonationToCharityForm
+        categories = Category.objects.all()
+        institutions = Institution.objects.all()
+        ctx = {
+            'categories': categories,
+            'institutions': institutions,
+            'form': form,
         }
+        return render(request, 'form.html', ctx)
 
-        return render(request, 'form.html', context)
+    def post(self, request):
+        form = DonationToCharityForm(request.POST)
+        if form.is_valid():
+            user = request.user.id
+            institution = request.POST['institution']
+            donation = Donation.objects.create(**form.cleaned_data, user_id=user, institution_id=institution)
+            categories = request.POST.getlist('categories')
+            for category in categories:
+                donation.categories.add(category)
+            return render(request, 'form-confirmation.html')
+        else:
+            categories = Category.objects.all()
+            institutions = Institution.objects.all()
+            ctx = {
+                'categories': categories,
+                'institutions': institutions,
+                'form': form,
+            }
+            return render(request, 'form.html', ctx)
     
 
 class Login(View):
