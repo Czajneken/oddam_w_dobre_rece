@@ -5,13 +5,29 @@
 {% block content %}
 <header>
     {% include 'nav_menu.html' %}
-    <section id="about-us" class="about-us">
-        <div class="about-us--text">
-            <h1>Imię: {{ user.first_name }}</h1>
-            <h1>Nazwisko: {{ user.last_name }}</h1>
-            <h1>Email: {{ user.email }}</h1>
+        <div>
+            <h1 style="margin: 100px 0px 0px 50px;">Imię: {{ user.first_name }}</h1>
+            <h1 style="margin-left: 50px;">Nazwisko: {{ user.last_name }}</h1>
+            <h1 style="margin-left: 50px;">Email: {{ user.email }}</h1>
         </div>
-      </section>
+        <br>
+        <div>
+            <h1 style="margin-left: 50px;">Lista przekazanych darów:</h1>
+            <ul>
+                {% for donation in all_user_donations %}
+                    <ol>
+                        <h1><li>Datek: </li></h1>
+                    </ol>
+                    <h1 style="margin-left: 50px;"><li>Dla: <i>{{donation.institution.name}}</i></li></h1>
+                    <h1 style="margin-left: 50px;"><li>Przekazane worki: <i>{{donation.quantity}} szt. - 
+                    {% for category in donation.categories.all %}
+                        {{ category }}
+                    {% endfor %}
+                        </i></li></h1>
+                    <h1 style="margin-left: 50px;"><li>Data: <i>{{donation.pick_up_date}}</i></li></h1>
+                {% endfor %}        
+            </ul>
+        </div>
 </header>
 
 {% endblock content %}

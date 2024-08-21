@@ -39,12 +39,12 @@ class AddDonation(LoginRequiredMixin, View):
         form = DonationToCharityForm
         categories = Category.objects.all()
         institutions = Institution.objects.all()
-        ctx = {
+        context = {
             'categories': categories,
             'institutions': institutions,
             'form': form,
         }
-        return render(request, 'form.html', ctx)
+        return render(request, 'form.html', context)
 
     def post(self, request):
         form = DonationToCharityForm(request.POST)
@@ -59,12 +59,12 @@ class AddDonation(LoginRequiredMixin, View):
         else:
             categories = Category.objects.all()
             institutions = Institution.objects.all()
-            ctx = {
+            context = {
                 'categories': categories,
                 'institutions': institutions,
                 'form': form,
             }
-            return render(request, 'form.html', ctx)
+            return render(request, 'form.html', context)
     
 
 class Login(View):
@@ -116,4 +116,11 @@ class Register(View):
 
 class Profile(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'profile.html')
+        user = request.user.id
+        all_user_donations = Donation.objects.filter(user=user)
+
+        context = {
+            'all_user_donations': all_user_donations
+        }
+
+        return render(request, 'profile.html', context)
