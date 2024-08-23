@@ -14,7 +14,11 @@ from .models import (
     Donation
 )
 
-from .forms import DonationToCharityForm
+from .forms import (
+    DonationToCharityForm,
+    EditUserForm,
+    EditUserPasswordForm,
+)
 
 class LandingPage(View):
     def get(self, request, *args, **kwargs):
@@ -48,7 +52,7 @@ class AddDonation(LoginRequiredMixin, View):
         }
         return render(request, 'form.html', context)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         form = DonationToCharityForm(request.POST)
         if form.is_valid():
             user = request.user.id
@@ -137,3 +141,41 @@ class Profile(View):
 
         return redirect('profile')
 
+
+class EditUser(View):
+    def get(self, request, *args, **kwargs):
+        form = EditUserForm
+        form2 = EditUserPasswordForm
+        context = {
+            'form': form,
+            'form2': form2,
+        }
+        return render(request, 'edit_user.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = EditUserForm(request.POST)
+        form2 = EditUserPasswordForm(request.POST)
+        if form.is_valid():
+            user_id = request.user.id
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            email = request.POST['email']
+
+            user = User.objects.get(pk=user_id)
+            user.username = email
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.save()
+
+            return redirect('profile')
+        elif form2.is_valid():
+            user_username = request.user.username
+            password = request.POST['password']
+
+            user = User.objects.get(username=user_username)
+            user.set_password = password
+            user.save()
+            return redirect('logout')
+        else:
+            return redirect('edit_user')

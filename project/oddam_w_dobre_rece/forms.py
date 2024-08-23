@@ -11,3 +11,15 @@ class DonationToCharityForm(forms.Form):
     pick_up_date = forms.DateField(widget=forms.DateInput(attrs={'placeholder': 'RRRR-MM-DD'}))
     pick_up_time = forms.TimeField(widget=forms.TimeInput(attrs={'placeholder': '--:--'}))
     pick_up_comment = forms.CharField(widget=forms.Textarea(attrs={'rows': '5'}), required=False)
+
+
+class EditUserForm(forms.Form):
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=60)
+    email = forms.EmailField()
+
+
+class EditUserPasswordForm(forms.Form):
+    password = forms.PasswordInput()
+    password2 = forms.PasswordInput()
+
