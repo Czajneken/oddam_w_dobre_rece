@@ -13,20 +13,52 @@
         <br>
         <div>
             <h1 style="margin-left: 50px;">Lista przekazanych darów:</h1>
-            <ul>
-                {% for donation in all_user_donations %}
+                <form action="" method="post">
+                    {% csrf_token %}
                     <ol>
-                        <h1><li>Datek: </li></h1>
+                        {% for donation in all_user_donations %}
+                        
+                        {% if not donation.is_taken %}
+                            <h1><li>Datek: </li></h1>
+                            <ul>
+                                <input type="hidden" name="donation_id" value="{{ donation.pk }}">
+                                <h1 style="margin-left: 50px;"><li>Dla: <i>{{donation.institution.name}}</i></li></h1>
+                                <h1 style="margin-left: 50px;"><li>Przekazane worki: <i>{{donation.quantity}} szt. - 
+                                {% for category in donation.categories.all %}
+                                    {{ category }}
+                                {% endfor %}
+                                    </i></li></h1>
+                                <h1 style="margin-left: 50px;"><li>Data i godzina: <i>{{donation.pick_up_date}}, {{donation.pick_up_time}}</i></li></h1>
+                                <h1 style="margin-left: 50px;"><li><input type="checkbox" name="is_taken" value="True"> Czy datek został zabrany?</li></h1>
+                                <input type="submit" value="Zapisz">
+                            </ul>
+                            <br>
+                        {% endif %}
+                        {% endfor %}        
                     </ol>
-                    <h1 style="margin-left: 50px;"><li>Dla: <i>{{donation.institution.name}}</i></li></h1>
-                    <h1 style="margin-left: 50px;"><li>Przekazane worki: <i>{{donation.quantity}} szt. - 
-                    {% for category in donation.categories.all %}
-                        {{ category }}
-                    {% endfor %}
-                        </i></li></h1>
-                    <h1 style="margin-left: 50px;"><li>Data: <i>{{donation.pick_up_date}}</i></li></h1>
-                {% endfor %}        
-            </ul>
+                </form>
+        </div>
+        <div style="color: grey;">
+            <h1 style="margin-left: 50px;">Lista odebranych darów:</h1>
+                <ol style="margin-left: 50px;">
+                    {% for donation in all_user_donations %}
+                    
+                    {% if donation.is_taken %}
+                        <h1><li>Datek: </li></h1>
+                        <ul>
+                            <input type="hidden" name="donation_id" value="{{ donation.pk }}">
+                            <h1><li>Dla: <i>{{donation.institution.name}}</i></li></h1>
+                            <h1><li>Przekazane worki: <i>{{donation.quantity}} szt. - 
+                            {% for category in donation.categories.all %}
+                                {{ category }}
+                            {% endfor %}
+                                </i></li></h1>
+                            <h1><li>Data i godzina: <i>{{donation.pick_up_date}}, {{donation.pick_up_time}}</i></li></h1>
+                        </ul>
+                        <br>
+                    {% endif %}
+                    {% endfor %}        
+                </ol>
         </div>
 </header>
 

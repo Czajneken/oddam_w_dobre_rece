@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -124,3 +126,14 @@ class Profile(View):
         }
 
         return render(request, 'profile.html', context)
+    def post(self, request, *args, **kwargs):
+        user = request.user.id
+        donation_id = request.POST.get('donation_id')
+        donation_is_taken = request.POST.get('is_taken')
+
+        edit_donation = Donation.objects.get(user=user, pk=donation_id)
+        edit_donation.is_taken = donation_is_taken
+        edit_donation.save()
+
+        return redirect('profile')
+
